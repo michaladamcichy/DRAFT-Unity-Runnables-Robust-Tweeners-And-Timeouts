@@ -19,11 +19,4 @@ internal class _FloatTween : _Tween
 
         return (float) GetCurrentValueFunction()() + delta * tweenDelta;
     }
-
-    protected override object NonAdditive(float tweenValue) //alert
-    {
-        var delta = (float)GetTarget() - (float)GetInitialValue();
-
-        return (float)GetInitialValue() + delta * tweenValue;
-    }
 }
