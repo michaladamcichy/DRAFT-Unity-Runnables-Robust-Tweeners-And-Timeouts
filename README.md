@@ -62,9 +62,6 @@ Now you can add Tweens, Timeouts and Intervals to the sequence.
 Name(nameof(floatVariable))
   .Tween(() => floatVariable, (object value) => { floatVariable = (float) value; })
   ...;
-
-var sequence = Tween(() => floatVariable, (object value) => { floatVariable = (float) value; })
-  ...;
 ```
 **Animating the value:**
 
@@ -100,7 +97,7 @@ Name("do it every frame")
   .Interval(() => { /**/});
 ```
 
-Intervals can be add to chain but since they loop untill they're stoped using Stop() methods, they must be last in the sequence.
+Intervals can be added to the sequence but since they loop until they're stoped using Stop() method, they must be last in the sequence.
 Interfaces of chain nodes enforce this, as well as some other rules. Look at the graph below:
 
 **What methods can I call from various chain nodes?**
