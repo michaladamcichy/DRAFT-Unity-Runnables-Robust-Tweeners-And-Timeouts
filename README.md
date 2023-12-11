@@ -1,6 +1,7 @@
 # DRAFT-Unity-Runnables-Robust-Tweeners-And-Timeouts
+![ezgif-3-a43e66f856](https://github.com/michaladamcichy/DRAFT-Unity-Runnables-Robust-Tweeners-And-Timeouts/assets/33597927/8dd841fc-608f-4aa0-9eef-ae353374f3f0)
 
-A draft implementation of tweeners and other coroutine related tools designed in such a way, that I enjoy using them. Existing frameworks didn't meet my needs.
+A draft implementation of tweeners and other coroutine related tools. Existing frameworks didn't meet my needs.
 
 Code needs revision, improvements, optimization. However, I found the concept worth sharing.
 
