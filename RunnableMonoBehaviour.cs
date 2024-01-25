@@ -132,6 +132,12 @@ public class RunnableMonoBehaviour : MonoBehaviour
         return new ActiveNode(false, name, name, this).LocalScale();
     }
 
+    public SetupTweenNode Transform()
+    {
+        var name = GenerateName();
+        return new ActiveNode(false, name, name, this).Transform();
+    }
+
     public void Stop(string name)
     {
         Debug.Log("stop " + name);

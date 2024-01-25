@@ -36,4 +36,16 @@ public class AnimateTweenNode : TweenNode
 
         return Animate(target, time, easeFunction);
     }
+
+    public virtual ActiveTweenNode Animate(Transform transform, float duration, Func<float, float> easeFunction = null)
+    {
+        return Animate(new Tuple<Vector3, Vector3, Vector3>(transform.localPosition, transform.localEulerAngles, transform.localScale), duration, easeFunction);
+    }
+    public virtual ActiveTweenNode Animate(Tuple<Vector3, Vector3, Vector3> target, float duration, Func<float, float> easeFunction = null)
+    {
+        if (easeFunction == null)
+            easeFunction = GetRunnableMonoBehaviour().GetDefaultEaseFunction();
+
+        return GetRunnableMonoBehaviour().Queue(ShouldForce(), GetParentName(), GetName(), new _TransformTween(ShouldForce(), target, duration, GetCurrentValueFunction(), GetUpdateValueAction(), easeFunction));
+    }
 }

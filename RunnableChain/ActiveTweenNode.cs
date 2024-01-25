@@ -37,4 +37,9 @@ public class ActiveTweenNode : AnimateTweenNode, IActiveNode
     {
         return activeNode_.Then(callback);
     }
+
+    public ActiveNode Then()
+    {
+        return activeNode_.Then(() => { }); //alert 
+    }
 }

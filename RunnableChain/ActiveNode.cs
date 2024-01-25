@@ -60,4 +60,19 @@ public class ActiveNode : RunnableChainNode, IActiveNode
     {
         return Tween(() => GetRunnableMonoBehaviour().transform.localScale, (object value) => { GetRunnableMonoBehaviour().transform.localScale = (Vector3)value; });
     }
+
+    public SetupTweenNode Transform()
+    {
+        return Tween(() => {
+            var transform = GetRunnableMonoBehaviour().transform;
+
+            return new Tuple<Vector3, Vector3, Vector3>(transform.localPosition, transform.localEulerAngles, transform.localScale);
+        }, 
+        (object value) => {
+            var t = (Tuple<Vector3, Vector3, Vector3>) value;
+            GetRunnableMonoBehaviour().transform.localPosition = t.Item1;
+            GetRunnableMonoBehaviour().transform.localEulerAngles = t.Item2;
+            GetRunnableMonoBehaviour().transform.localScale = t.Item3;
+        });
+    } 
 }
