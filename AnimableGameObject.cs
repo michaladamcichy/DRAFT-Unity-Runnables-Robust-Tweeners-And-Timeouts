@@ -6,13 +6,13 @@ public class AnimableGameObject : MonoBehaviour, IRunnablerContainer
 {
     Runnabler runnabler_;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         runnabler_ = new Runnabler(this);
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         runnabler_.Update();
     }

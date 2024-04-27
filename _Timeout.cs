@@ -23,12 +23,15 @@ internal class _Timeout : _Runnable
         OnRun();
 
         float timePassed = 0f;
-        while(timePassed < duration_)
+        while(timePassed < duration_ && GetState() < State.finished)
         {
             timePassed += GetSpeed() * Time.deltaTime;
 
             yield return new WaitForEndOfFrame();
         }
+
+        if(GetState() == State.finished)
+            yield break;
 
         callback_();
 
