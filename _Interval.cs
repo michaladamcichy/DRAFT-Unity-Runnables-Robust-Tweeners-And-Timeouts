@@ -22,11 +22,24 @@ internal class _Interval : _Runnable
             yield break; //alert czy to działa?
 
         OnRun();
-        
+
         while(GetState() == State.running)
         {
             callback_();
-            yield return interval_.HasValue ? new WaitForSeconds(interval_.Value) : new WaitForEndOfFrame();
+
+
+            if(!interval_.HasValue)
+            {
+                yield return new WaitForEndOfFrame();
+                continue;
+            }
+
+            float timePassed = 0f;
+            while (timePassed < interval_.Value)
+            {
+                timePassed += GetSpeed() * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         Stop();

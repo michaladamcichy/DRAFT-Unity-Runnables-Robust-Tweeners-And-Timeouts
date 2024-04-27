@@ -30,6 +30,30 @@ internal class _TransformTween : _Tween
         return new Tuple<Vector3, Vector3, Vector3>(position, rotation, scale);
     }
 
+    protected override object CorrrectTarget(object initial, object target)
+    {
+        var targetValue = ((Tuple<Vector3, Vector3, Vector3>) target).Item2;
+        var initialValue = ((Tuple<Vector3, Vector3, Vector3>) initial).Item2;
+        while (Mathf.Abs(targetValue.x - initialValue.x) > 180.0f) //alert dummy :)
+        {
+            targetValue.x -= 360f * (Mathf.Sign(targetValue.x - initialValue.x));
+        }
+
+        while (Mathf.Abs(targetValue.y - initialValue.y) > 180.0f)
+        {
+            targetValue.y -= 360f * (Mathf.Sign(targetValue.y - initialValue.y));
+        }
+
+        while (Mathf.Abs(targetValue.z - initialValue.z) > 180.0f)
+        {
+            targetValue.z -= 360f * (Mathf.Sign(targetValue.z - initialValue.z));
+        }
+
+        var output = ((Tuple<Vector3, Vector3, Vector3>)target);
+
+        return new Tuple<Vector3, Vector3, Vector3>(output.Item1, targetValue, output.Item3);
+    }
+
     //protected override object NonAdditive(float tweenValue) //alert
     //{
     //    var delta = (Vector3)GetTarget() - (Vector3)GetInitialValue();

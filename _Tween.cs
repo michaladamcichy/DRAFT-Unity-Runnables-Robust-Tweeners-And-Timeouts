@@ -8,7 +8,7 @@ using UnityEngine;
 
 internal abstract class _Tween : _Runnable
 {
-    object target_;
+    protected object target_;
     float duration_;
     Func<object> getCurrentValueFunction_;
     Action<object> updateAction_;
@@ -38,6 +38,8 @@ internal abstract class _Tween : _Runnable
 
         initialValue_ = getCurrentValueFunction_();
 
+        target_ = CorrrectTarget(initialValue_, target_);
+
         while (position_ < 1f)
         {
             if (GetState() == State.finished)
@@ -45,7 +47,8 @@ internal abstract class _Tween : _Runnable
 
             var lastPosition = position_;
 
-            position_ += Time.deltaTime / duration_;
+            position_ += GetSpeed() * Time.deltaTime / duration_;
+            position_ = Mathf.Min(position_, 1f);
 
             var tweenValue = easeFunction_(position_);
             var tweenDelta = tweenValue - easeFunction_(lastPosition); //alert efficiency!
@@ -88,6 +91,8 @@ internal abstract class _Tween : _Runnable
     {
         return updateAction_;
     }
+
+    protected abstract object CorrrectTarget(object initial, object target);
 
     protected abstract object ApplyTweenDelta(float tweenDelta); //alert zła nazwa
 }

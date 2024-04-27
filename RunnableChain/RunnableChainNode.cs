@@ -9,13 +9,13 @@ public abstract class RunnableChainNode
 {
     string parentName_;
     string name_;
-    RunnableMonoBehaviour runnableMonoBehaviour_;
+    Runnabler runnabler_;
     bool force_ = false;
-    public RunnableChainNode(bool force, string parentName, string name, RunnableMonoBehaviour runnableMonoBehaviour)
+    public RunnableChainNode(bool force, string parentName, string name, Runnabler runnableMonoBehaviour)
     {
         parentName_ = parentName;
         name_ = name;
-        runnableMonoBehaviour_ = runnableMonoBehaviour;
+        runnabler_ = runnableMonoBehaviour;
         force_ = force;
     }
 
@@ -28,18 +28,28 @@ public abstract class RunnableChainNode
         return name_;
     }
 
-    public RunnableMonoBehaviour GetRunnableMonoBehaviour()
+    public Runnabler GetRunnabler()
     {
-        return runnableMonoBehaviour_;
+        return runnabler_;
     }
 
     public void Stop()
     {
-        runnableMonoBehaviour_.Stop(parentName_);
+        runnabler_.Stop(parentName_);
+    }
+
+    public void StopIfExists()
+    {
+        runnabler_.StopIfExists(parentName_);
     }
 
     protected bool ShouldForce()
     {
         return force_;
+    }
+
+    public bool Exists()
+    {
+        return runnabler_.RunnableExists(parentName_);
     }
 }

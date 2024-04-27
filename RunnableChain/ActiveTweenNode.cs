@@ -3,7 +3,7 @@
 public class ActiveTweenNode : AnimateTweenNode, IActiveNode
 {
     ActiveNode activeNode_;
-    public ActiveTweenNode(bool force, string parentName, string name, RunnableMonoBehaviour runnableMonoBehaviour, Func<object> currentValue, Action<object> updateValue)
+    public ActiveTweenNode(bool force, string parentName, string name, Runnabler runnableMonoBehaviour, Func<object> currentValue, Action<object> updateValue)
         : base(force, parentName, name, runnableMonoBehaviour, currentValue, updateValue)
     {
         activeNode_ = new ActiveNode(force, parentName, name, runnableMonoBehaviour);
@@ -30,7 +30,7 @@ public class ActiveTweenNode : AnimateTweenNode, IActiveNode
 
     public ActiveTweenNode Parallel()
     {
-        return GetRunnableMonoBehaviour().ForkTween(GetName(), GetCurrentValueFunction(), GetUpdateValueAction());
+        return GetRunnabler().ForkTween(GetName(), GetCurrentValueFunction(), GetUpdateValueAction());
     }
 
     public ActiveNode Then(Action callback)

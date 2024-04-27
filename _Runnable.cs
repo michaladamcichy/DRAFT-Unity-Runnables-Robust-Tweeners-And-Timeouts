@@ -16,6 +16,7 @@ internal abstract class _Runnable
     }
 
     State state_ = State.pending;
+    float speed_ = 1f;
 
     public abstract IEnumerator Run();
 
@@ -50,6 +51,16 @@ internal abstract class _Runnable
             return;
 
         state_ = State.running;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed_ = speed;
+    }
+
+    public float GetSpeed()
+    {
+        return speed_;
     }
 }
 

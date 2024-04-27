@@ -5,7 +5,7 @@ public class TweenNode : RunnableChainNode
     Func<object> currentValue_;
     Action<object> updateValue_;
 
-    public TweenNode(bool force, string parentName, string name, RunnableMonoBehaviour runnableMonoBehaviour, Func<object> currentValue, Action<object> updateValue) 
+    public TweenNode(bool force, string parentName, string name, Runnabler runnableMonoBehaviour, Func<object> currentValue, Action<object> updateValue) 
         : base(force, parentName, name, runnableMonoBehaviour)
     {
         currentValue_ = currentValue;

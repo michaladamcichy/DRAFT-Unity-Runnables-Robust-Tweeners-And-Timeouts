@@ -19,4 +19,9 @@ internal class _FloatTween : _Tween
 
         return (float) GetCurrentValueFunction()() + delta * tweenDelta;
     }
+
+    protected override object CorrrectTarget(object initial, object target)
+    {
+        return target; //alert
+    }
 }

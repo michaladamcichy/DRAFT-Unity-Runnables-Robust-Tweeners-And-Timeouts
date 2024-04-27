@@ -21,9 +21,14 @@ internal class _Timeout : _Runnable
             yield break; //alert czy to działa?
 
         OnRun();
-        
 
-        yield return new WaitForSeconds(duration_);
+        float timePassed = 0f;
+        while(timePassed < duration_)
+        {
+            timePassed += GetSpeed() * Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
 
         callback_();
 

@@ -3,33 +3,38 @@ using UnityEngine;
 
 public class ActiveNode : RunnableChainNode, IActiveNode
 {
-    public ActiveNode(bool force, string parentName, string name, RunnableMonoBehaviour runnableMonoBehaviour) : base(force, parentName, name, runnableMonoBehaviour)
+    public ActiveNode(bool force, string parentName, string name, Runnabler runnableMonoBehaviour) : base(force, parentName, name, runnableMonoBehaviour)
     {
     }
     public SetupTweenNode Tween(Func<object> currentValue, Action<object> updateValue)
     {
-        return new SetupTweenNode(ShouldForce(), GetParentName(), GetName(), GetRunnableMonoBehaviour(), currentValue, updateValue);
+        return new SetupTweenNode(ShouldForce(), GetParentName(), GetName(), GetRunnabler(), currentValue, updateValue);
     }
 
     public ActiveNode Timeout(float duration, Action callback)
     {
-        return GetRunnableMonoBehaviour().Queue(ShouldForce(), GetParentName(), GetName(), new _Timeout(duration, callback));
+        return GetRunnabler().Queue(ShouldForce(), GetParentName(), GetName(), new _Timeout(duration, callback));
+    }
+
+    public ActiveNode Timeout(float duration)
+    {
+        return Timeout(duration, () => { }); //alert
     }
 
     public FinalNode Interval(float interval, Action callback)
     {
-        var node = GetRunnableMonoBehaviour().Queue(ShouldForce(), GetParentName(), GetName(), new _Interval(interval, callback));
-        return new FinalNode(node.ShouldForce(), GetParentName(), GetName(), GetRunnableMonoBehaviour());
+        var node = GetRunnabler().Queue(ShouldForce(), GetParentName(), GetName(), new _Interval(interval, callback));
+        return new FinalNode(node.ShouldForce(), GetParentName(), GetName(), GetRunnabler());
     }
     public FinalNode Interval(Action callback)
     {
-        var node = GetRunnableMonoBehaviour().Queue(ShouldForce(), GetParentName(), GetName(), new _Interval(null, callback));
-        return new FinalNode(node.ShouldForce(), GetParentName(), GetName(), GetRunnableMonoBehaviour());
+        var node = GetRunnabler().Queue(ShouldForce(), GetParentName(), GetName(), new _Interval(null, callback));
+        return new FinalNode(node.ShouldForce(), GetParentName(), GetName(), GetRunnabler());
     }
 
     public ActiveNode Parallel()
     {
-        return GetRunnableMonoBehaviour().Fork(GetName());
+        return GetRunnabler().Fork(GetName());
     }
 
     public ActiveNode Then(Action action)
@@ -39,40 +44,39 @@ public class ActiveNode : RunnableChainNode, IActiveNode
 
     public SetupTweenNode Position()
     {
-        return Tween(() => GetRunnableMonoBehaviour().transform.position, (object value) => { GetRunnableMonoBehaviour().transform.position = (Vector3)value; });
+        return Tween(() => GetRunnabler().GetParent().transform.position, (object value) => { GetRunnabler().GetParent().transform.position = (Vector3)value; });
     }
 
     public SetupTweenNode LocalPosition()
     {
-        return Tween(() => GetRunnableMonoBehaviour().transform.localPosition, (object value) => { GetRunnableMonoBehaviour().transform.localPosition = (Vector3)value; });
+        return Tween(() => GetRunnabler().GetParent().transform.localPosition, (object value) => { GetRunnabler().GetParent().transform.localPosition = (Vector3)value; });
     }
 
     public SetupTweenNode EulerAngles()
     {
-        return Tween(() => GetRunnableMonoBehaviour().transform.eulerAngles, (object value) => { GetRunnableMonoBehaviour().transform.eulerAngles = (Vector3)value; });
+        return Tween(() => GetRunnabler().GetParent().transform.eulerAngles, (object value) => { GetRunnabler().GetParent().transform.eulerAngles = (Vector3)value; });
     }
 
     public SetupTweenNode LocalEulerAngles()
     {
-        return Tween(() => GetRunnableMonoBehaviour().transform.localEulerAngles, (object value) => { GetRunnableMonoBehaviour().transform.localEulerAngles = (Vector3)value; });
+        return Tween(() => GetRunnabler().GetParent().transform.localEulerAngles, (object value) => { GetRunnabler().GetParent().transform.localEulerAngles = (Vector3)value; });
     }
     public SetupTweenNode LocalScale()
     {
-        return Tween(() => GetRunnableMonoBehaviour().transform.localScale, (object value) => { GetRunnableMonoBehaviour().transform.localScale = (Vector3)value; });
+        return Tween(() => GetRunnabler().GetParent().transform.localScale, (object value) => { GetRunnabler().GetParent().transform.localScale = (Vector3)value; });
     }
 
     public SetupTweenNode Transform()
     {
         return Tween(() => {
-            var transform = GetRunnableMonoBehaviour().transform;
+            var transform = GetRunnabler().GetParent().transform;
 
-            return new Tuple<Vector3, Vector3, Vector3>(transform.localPosition, transform.localEulerAngles, transform.localScale);
+
+            return Runnabler.To(transform);
         }, 
         (object value) => {
             var t = (Tuple<Vector3, Vector3, Vector3>) value;
-            GetRunnableMonoBehaviour().transform.localPosition = t.Item1;
-            GetRunnableMonoBehaviour().transform.localEulerAngles = t.Item2;
-            GetRunnableMonoBehaviour().transform.localScale = t.Item3;
+            Runnabler.Set(GetRunnabler(), t);
         });
-    } 
+    }
 }

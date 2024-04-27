@@ -11,6 +11,7 @@ internal class _Vector3Tween : _Tween
     public _Vector3Tween(bool force, Vector3 target, float duration, Func<object> getCurrentValue, Action<object> updateAction, Func<float, float> easeFunction)
         : base(force, target, duration, getCurrentValue, updateAction, easeFunction)
     {
+        
     }
 
     protected override object ApplyTweenDelta(float tweenDelta)
@@ -18,6 +19,11 @@ internal class _Vector3Tween : _Tween
         var delta = (Vector3) GetTarget() - (Vector3) GetInitialValue();
 
         return (Vector3) GetCurrentValueFunction()() + delta * tweenDelta;
+    }
+
+    protected override object CorrrectTarget(object initial, object target)
+    {
+        return target; //alert
     }
 
     //protected override object NonAdditive(float tweenValue) //alert
